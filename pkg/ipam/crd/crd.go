@@ -17,12 +17,15 @@
 package crd
 
 import (
+	"context"
+
 	extensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1beta1"
 	apiextensionsclient "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	glog "k8s.io/klog"
+
 	"tkestack.io/galaxy/pkg/ipam/apis/galaxy"
 )
 
@@ -73,7 +76,7 @@ func EnsureCRDCreated(client apiextensionsclient.Interface) error {
 	crds := []*extensionsv1.CustomResourceDefinition{floatingipCrd, poolCrd}
 	for i := range crds {
 		// try to create each crd and ignores already exist error
-		if _, err := crdClient.Create(crds[i]); err != nil && !apierrors.IsAlreadyExists(err) {
+		if _, err := crdClient.Create(context.TODO(), crds[i], metav1.CreateOptions{}); err != nil && !apierrors.IsAlreadyExists(err) {
 			glog.Errorf("Error creating CRD: %s", crds[i].Spec.Names.Kind)
 			return err
 		}
