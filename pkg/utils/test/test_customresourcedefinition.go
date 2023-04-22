@@ -72,7 +72,7 @@ func (c *customResourceDefinitionBuilder) Get() *extensionv1.CustomResourceDefin
 		},
 		TypeMeta: metav1.TypeMeta{
 			Kind:       "CustomResourceDefinition",
-			APIVersion: "apiextensions.k8s.io/v1beta1",
+			APIVersion: "apiextensions.k8s.io/v1",
 		},
 		Spec: extensionv1.CustomResourceDefinitionSpec{
 			Group:   c.group,

@@ -33,7 +33,7 @@ var floatingipCrd = &extensionsv1.CustomResourceDefinition{
 	},
 	TypeMeta: metav1.TypeMeta{
 		Kind:       "CustomResourceDefinition",
-		APIVersion: "apiextensions.k8s.io/v1beta1",
+		APIVersion: "apiextensions.k8s.io/v1",
 	},
 	Spec: extensionsv1.CustomResourceDefinitionSpec{
 		Group:   galaxy.GroupName,
@@ -54,7 +54,7 @@ var poolCrd = &extensionsv1.CustomResourceDefinition{
 	},
 	TypeMeta: metav1.TypeMeta{
 		Kind:       "CustomResourceDefinition",
-		APIVersion: "apiextensions.k8s.io/v1beta1",
+		APIVersion: "apiextensions.k8s.io/v1",
 	},
 	Spec: extensionsv1.CustomResourceDefinitionSpec{
 		Group:   galaxy.GroupName,
