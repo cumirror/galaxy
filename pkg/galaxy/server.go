@@ -17,6 +17,7 @@
 package galaxy
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -286,7 +287,7 @@ func parseExtendedCNIArgs(pod *corev1.Pod) (map[string]json.RawMessage, error) {
 
 func (g *Galaxy) setupIPtables() error {
 	// filter all running pods on node
-	pods, err := g.client.CoreV1().Pods(v1.NamespaceAll).List(v1.ListOptions{
+	pods, err := g.client.CoreV1().Pods(v1.NamespaceAll).List(context.TODO(), v1.ListOptions{
 		FieldSelector: fields.OneTermEqualSelector("spec.nodeName", k8s.GetHostname()).String()})
 	if err != nil {
 		return fmt.Errorf("failed to get pods on node: %v", err)
@@ -365,7 +366,7 @@ func (g *Galaxy) setupPortMapping(req *galaxyapi.PodRequest, containerID string,
 
 func (g *Galaxy) updatePortMappingAnnotation(req *galaxyapi.PodRequest, data []byte) error {
 	return wait.Poll(10*time.Millisecond, 1*time.Minute, func() (bool, error) {
-		pod, err := g.client.CoreV1().Pods(req.PodNamespace).Get(req.PodName, v1.GetOptions{})
+		pod, err := g.client.CoreV1().Pods(req.PodNamespace).Get(context.TODO(), req.PodName, v1.GetOptions{})
 		if err != nil {
 			return false, err
 		}
@@ -373,7 +374,7 @@ func (g *Galaxy) updatePortMappingAnnotation(req *galaxyapi.PodRequest, data []b
 			pod.Annotations = make(map[string]string)
 		}
 		pod.Annotations[k8s.PortMappingPortsAnnotation] = string(data)
-		_, err = g.client.CoreV1().Pods(req.PodNamespace).Update(pod)
+		_, err = g.client.CoreV1().Pods(req.PodNamespace).Update(context.TODO(), pod, v1.UpdateOptions{})
 		if err == nil {
 			return true, nil
 		}
@@ -413,7 +414,7 @@ func (g *Galaxy) getPod(name, namespace string) (*corev1.Pod, error) {
 	var pod *corev1.Pod
 	printOnce := false
 	if err := wait.PollImmediate(time.Millisecond*500, 5*time.Second, func() (done bool, err error) {
-		pod, err = g.client.CoreV1().Pods(namespace).Get(name, v1.GetOptions{})
+		pod, err = g.client.CoreV1().Pods(namespace).Get(context.TODO(), name, v1.GetOptions{})
 		if err != nil {
 			if errors.IsNotFound(err) {
 				if printOnce == false {
