@@ -19,7 +19,7 @@ package crd
 import (
 	"context"
 
-	extensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1beta1"
+	extensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	apiextensionsclient "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -39,9 +39,15 @@ var floatingipCrd = &extensionsv1.CustomResourceDefinition{
 		APIVersion: "apiextensions.k8s.io/v1",
 	},
 	Spec: extensionsv1.CustomResourceDefinitionSpec{
-		Group:   galaxy.GroupName,
-		Version: "v1alpha1",
-		Scope:   extensionsv1.ClusterScoped,
+		Group: galaxy.GroupName,
+		Scope: extensionsv1.ClusterScoped,
+		Versions: []extensionsv1.CustomResourceDefinitionVersion{
+			{
+				Name:    "v1alpha1",
+				Served:  true,
+				Storage: true,
+			},
+		},
 		Names: extensionsv1.CustomResourceDefinitionNames{
 			Kind:       "FloatingIP",
 			Plural:     "floatingips",
@@ -60,9 +66,15 @@ var poolCrd = &extensionsv1.CustomResourceDefinition{
 		APIVersion: "apiextensions.k8s.io/v1",
 	},
 	Spec: extensionsv1.CustomResourceDefinitionSpec{
-		Group:   galaxy.GroupName,
-		Version: "v1alpha1",
-		Scope:   extensionsv1.NamespaceScoped,
+		Group: galaxy.GroupName,
+		Scope: extensionsv1.NamespaceScoped,
+		Versions: []extensionsv1.CustomResourceDefinitionVersion{
+			{
+				Name:    "v1alpha1",
+				Served:  true,
+				Storage: true,
+			},
+		},
 		Names: extensionsv1.CustomResourceDefinitionNames{
 			Kind:   "Pool",
 			Plural: "pools",
@@ -72,7 +84,7 @@ var poolCrd = &extensionsv1.CustomResourceDefinition{
 
 // EnsureCRDCreated ensures floatingip and pool are created in apiserver
 func EnsureCRDCreated(client apiextensionsclient.Interface) error {
-	crdClient := client.ApiextensionsV1beta1().CustomResourceDefinitions()
+	crdClient := client.ApiextensionsV1().CustomResourceDefinitions()
 	crds := []*extensionsv1.CustomResourceDefinition{floatingipCrd, poolCrd}
 	for i := range crds {
 		// try to create each crd and ignores already exist error
@@ -89,7 +101,7 @@ func EnsureCRDCreated(client apiextensionsclient.Interface) error {
 func GetGroupVersionResource(crd *extensionsv1.CustomResourceDefinition) schema.GroupVersionResource {
 	return schema.GroupVersionResource{
 		Group:    crd.Spec.Group,
-		Version:  crd.Spec.Version,
+		Version:  "v1alpha1",
 		Resource: crd.Spec.Names.Plural,
 	}
 }

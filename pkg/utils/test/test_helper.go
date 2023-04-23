@@ -1,12 +1,14 @@
 package test
 
 import (
+	"strings"
+
 	corev1 "k8s.io/api/core/v1"
-	extensionv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1beta1"
+	extensionv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	"strings"
+
 	"tkestack.io/galaxy/pkg/api/galaxy/constant"
 )
 
@@ -24,9 +26,9 @@ var (
 		WithGroupVersion("test.org", "v2").Get()
 
 	NotScalableCrd = CustomResourceDefinition().
-			WithName("not-scalable").
-			WithSubresources(&extensionv1.CustomResourceSubresources{}).
-			WithGroupVersion("test.org", "v1").Get()
+		WithName("not-scalable").
+		WithSubresources(&extensionv1.CustomResourceSubresources{}).
+		WithGroupVersion("test.org", "v1").Get()
 )
 
 // CreateCRDApp creates an app based on its child pod meta and custom resource definition
