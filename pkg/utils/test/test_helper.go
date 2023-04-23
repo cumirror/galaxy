@@ -26,9 +26,9 @@ var (
 		WithGroupVersion("test.org", "v2").Get()
 
 	NotScalableCrd = CustomResourceDefinition().
-		WithName("not-scalable").
-		WithSubresources(&extensionv1.CustomResourceSubresources{}).
-		WithGroupVersion("test.org", "v1").Get()
+			WithName("not-scalable").
+			WithSubresources(&extensionv1.CustomResourceSubresources{}).
+			WithGroupVersion("test.org", "v1").Get()
 )
 
 // CreateCRDApp creates an app based on its child pod meta and custom resource definition
