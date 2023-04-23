@@ -33,6 +33,9 @@ import (
 var floatingipCrd = &extensionsv1.CustomResourceDefinition{
 	ObjectMeta: metav1.ObjectMeta{
 		Name: "floatingips.galaxy.k8s.io",
+		Annotations: map[string]string{
+			"api-approved.kubernetes.io": "https://github.com/kubernetes/kubernetes/pull/78458",
+		},
 	},
 	TypeMeta: metav1.TypeMeta{
 		Kind:       "CustomResourceDefinition",
@@ -46,6 +49,7 @@ var floatingipCrd = &extensionsv1.CustomResourceDefinition{
 				Name:    "v1alpha1",
 				Served:  true,
 				Storage: true,
+				Schema:  &extensionsv1.CustomResourceValidation{},
 			},
 		},
 		Names: extensionsv1.CustomResourceDefinitionNames{
@@ -60,6 +64,9 @@ var floatingipCrd = &extensionsv1.CustomResourceDefinition{
 var poolCrd = &extensionsv1.CustomResourceDefinition{
 	ObjectMeta: metav1.ObjectMeta{
 		Name: "pools.galaxy.k8s.io",
+		Annotations: map[string]string{
+			"api-approved.kubernetes.io": "https://github.com/kubernetes/kubernetes/pull/78458",
+		},
 	},
 	TypeMeta: metav1.TypeMeta{
 		Kind:       "CustomResourceDefinition",
@@ -73,6 +80,7 @@ var poolCrd = &extensionsv1.CustomResourceDefinition{
 				Name:    "v1alpha1",
 				Served:  true,
 				Storage: true,
+				// Schema:  nil,
 			},
 		},
 		Names: extensionsv1.CustomResourceDefinitionNames{
