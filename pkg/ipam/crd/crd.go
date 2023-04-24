@@ -150,6 +150,7 @@ var poolCrd = &extensionsv1.CustomResourceDefinition{
 							},
 						},
 						Required: []string{"preAllocateIP", "size"},
+						Type:     "object",
 					},
 				},
 			},
