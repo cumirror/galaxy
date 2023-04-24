@@ -49,12 +49,57 @@ var floatingipCrd = &extensionsv1.CustomResourceDefinition{
 				Name:    "v1alpha1",
 				Served:  true,
 				Storage: true,
-				Schema:  &extensionsv1.CustomResourceValidation{},
+				Schema: &extensionsv1.CustomResourceValidation{
+					&extensionsv1.JSONSchemaProps{
+						Description: "FloatingIP provides configuration for floatingIP.",
+						Properties: map[string]extensionsv1.JSONSchemaProps{
+							"apiVersion": {
+								Description: "APIVersion defines the versioned schema of this representation of an object.",
+								Type:        "string",
+							},
+							"kind": {
+								Description: "Kind is a string value representing the REST resource this object represents.",
+								Type:        "string",
+							},
+							"metadata": {
+								Type: "object",
+							},
+							"spec": {
+								Description: "Spec defines the desired identities of FloatingIP.",
+								Properties: map[string]extensionsv1.JSONSchemaProps{
+									"attribute": {
+										Description: "attribute used as node ip",
+										Type:        "string",
+									},
+									"key": {
+										Description: "key can be resolved as pool, namespace name, app name, app type and pod name",
+										Type:        "string",
+									},
+									"policy": {
+										Description: "policy used as",
+										Type:        "integer",
+									},
+									"updateTime": {
+										Description: "FloatingIP update(allocate, release or update) timestamp",
+										Format:      "date-time",
+										Type:        "string",
+									},
+								},
+								Required: []string{"attribute", "key", "policy", "updateTime"},
+								Type:     "object",
+							},
+						},
+						Required: []string{"spec"},
+						Type:     "object",
+					},
+				},
 			},
 		},
 		Names: extensionsv1.CustomResourceDefinitionNames{
 			Kind:       "FloatingIP",
+			ListKind:   "FloatingIPList",
 			Plural:     "floatingips",
+			Singular:   "floatingip",
 			ShortNames: []string{"fip"},
 		},
 	},
@@ -80,12 +125,39 @@ var poolCrd = &extensionsv1.CustomResourceDefinition{
 				Name:    "v1alpha1",
 				Served:  true,
 				Storage: true,
-				// Schema:  nil,
+				Schema: &extensionsv1.CustomResourceValidation{
+					&extensionsv1.JSONSchemaProps{
+						Description: "Pool provides configuration for FloatingIP pool which used to store FloatingIP.",
+						Properties: map[string]extensionsv1.JSONSchemaProps{
+							"apiVersion": {
+								Description: "APIVersion defines the versioned schema of this representation of an object.",
+								Type:        "string",
+							},
+							"kind": {
+								Description: "Kind is a string value representing the REST resource this object represents.",
+								Type:        "string",
+							},
+							"metadata": {
+								Type: "object",
+							},
+							"preAllocateIP": {
+								Description: "Pre-allocate IP when creating pool",
+								Type:        "boolean",
+							},
+							"size": {
+								Description: "The pool size",
+								Type:        "integer",
+							},
+						},
+					},
+				},
 			},
 		},
 		Names: extensionsv1.CustomResourceDefinitionNames{
-			Kind:   "Pool",
-			Plural: "pools",
+			Kind:     "Pool",
+			ListKind: "PoolList",
+			Plural:   "pools",
+			Singular: "pool",
 		},
 	},
 }
