@@ -437,18 +437,19 @@ func convertResult(result types.Result) (*t020.Result, error) {
 		return nil, fmt.Errorf("result is nil")
 	}
 	resultCurrent, ok := result.(*current.Result)
+	data, _ := json.Marshal(result)
 	if !ok {
-		return nil, fmt.Errorf("faild to convert result to 020 result")
+		return nil, fmt.Errorf("faild to convert result to 020 result 442: [%s]", string(data))
 	}
-
 	result, err := resultCurrent.GetAsVersion(t020.ImplementedSpecVersion)
 	if err != nil {
 		return nil, err
 	}
 
+	data, _ = json.Marshal(result)
 	result020, ok := result.(*t020.Result)
 	if !ok {
-		return nil, fmt.Errorf("faild to convert result to 020 result")
+		return nil, fmt.Errorf("faild to convert result to 020 result 452: [%s]", string(data))
 	}
 
 	if result020.IP4 == nil {

@@ -18,13 +18,13 @@ clientConnection:
   kubeconfig: /etc/kubernetes/kube-scheduler/kubeconfig
   qps: 0
 extenders:
-  - enableHTTPS: false
-    filterVerb: filter
-    bindVerb: bind
-    weight: 1
-    httpTimeout: 0s
-    managedResources:
-      - name: tke.cloud.tencent.com/eni-ip
-        ignoredByScheduler: true
-    nodeCacheCapable: true
-    urlPrefix: http://172.31.255.189:9040/v1
+- enableHTTPS: false
+  filterVerb: filter
+  bindVerb: bind
+  weight: 1
+  httpTimeout: 0s
+  managedResources:
+    - name: tke.cloud.tencent.com/eni-ip
+      ignoredByScheduler: true
+  nodeCacheCapable: true
+  urlPrefix: http://192.168.253.174:9040/v1

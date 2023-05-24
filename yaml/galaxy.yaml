@@ -80,7 +80,7 @@ spec:
       hostPID: true
       containers:
       # mirrors.tencent.com/tkestack/galaxy-amd64:v1.0.8.3.g494cfa14
-      - image: mirrors.tencent.com/tkestack/galaxy-amd64:v1.0.7
+      - image: ccr.ccs.tencentyun.com/paas-test/jacksontong:galaxy-26f7e1d0
         command: ["/bin/sh"]
         # qcloud galaxy should run with --route-eni
         args: ["-c", "cp -p /etc/galaxy/cni/00-galaxy.conf /etc/cni/net.d/; cp -p /opt/cni/galaxy/bin/galaxy-sdn /opt/cni/galaxy/bin/loopback /opt/cni/bin/; /usr/bin/galaxy --logtostderr=true --v=3 --route-eni"]
@@ -186,5 +186,5 @@ data:
       "name": "galaxy-sdn",
       "type": "galaxy-sdn",
       "capabilities": {"portMappings": true},
-      "cniVersion": "0.2.0"
+      "cniVersion": "1.2.0"
     }
